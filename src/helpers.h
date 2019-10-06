@@ -4,6 +4,8 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include "helpers2.h"
+#include "spline.h"
 
 // for convenience
 using std::string;
@@ -151,7 +153,60 @@ vector<double> getXY(double s, double d, const vector<double> &maps_s,
   double x = seg_x + d*cos(perp_heading);
   double y = seg_y + d*sin(perp_heading);
 
-  return {x,y};
+  //return {x,y};
+  return {x,y,heading};
 }
+
+// // Transform from Frenet s,d coordinates to Cartesian x,y
+// vector<double> getXY_Spline(double s, double d, const vector<double> &maps_s, 
+//                      const vector<double> &maps_x, 
+//                      const vector<double> &maps_y) {
+//   int prev_wp = -1;
+
+//   while (s > maps_s[prev_wp+1] && (prev_wp < (int)(maps_s.size()-1))) {
+//     ++prev_wp;
+//   }
+
+//   int wp2 = (prev_wp+1)%maps_x.size();
+
+//   double heading = atan2((maps_y[wp2]-maps_y[prev_wp]),
+//                          (maps_x[wp2]-maps_x[prev_wp]));
+//   // the x,y,s along the segment
+//   double seg_s = (s-maps_s[prev_wp]);
+
+//   double seg_x = maps_x[prev_wp]+seg_s*cos(heading);
+//   double seg_y = maps_y[prev_wp]+seg_s*sin(heading);
+
+//   vector<int> spline_wp = {prev_wp,wp2};
+//   for (int i = 0; i < 5; i++){
+//     spline_wp.push_back((wp2+1+i)%maps_x.size());
+//   }
+  
+//   vector<vector<double>> spline_points = {{},{}};
+//   for (int i = 0; i < spline_wp.size(); i++){
+//     double point_x = maps_x[spline_wp[i]];
+//     double point_y = maps_y[spline_wp[i]];
+//     vector<double> point_ij = fromMapToCarCoord(maps_x[spline_wp[0]], maps_y[spline_wp[0]], heading, point_x, point_y);
+//     spline_points[0].push_back(point_ij[0]);
+//     spline_points[1].push_back(point_ij[1]);
+//   }
+//   tk::spline wp_spline;
+//   wp_spline.set_points(spline_points[0],spline_points[1]);
+  
+//   double seg_i = seg_s;
+//   double seg_j = wp_spline(seg_i);
+  
+//   vector<double> point_xy = fromCarToMapCoord(maps_x[spline_wp[0]], maps_y[spline_wp[0]], heading, seg_i, seg_j);
+//   seg_x = point_xy[0];
+//   seg_y = point_xy[1];
+  
+//   double perp_heading = heading-pi()/2;
+
+//   double x = seg_x + d*cos(perp_heading);
+//   double y = seg_y + d*sin(perp_heading);
+  
+//   //return {x,y};
+//   return {x,y,heading};
+// }
 
 #endif  // HELPERS_H
