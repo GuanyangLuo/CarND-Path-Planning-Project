@@ -1,5 +1,7 @@
 # Code Model for Generating Paths
 
+Setup for this project can be found [here](Udacity_Project_README.md)
+
 ---
 **Path Planning**
 
